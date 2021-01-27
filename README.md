@@ -14,7 +14,7 @@ Now you can compile the file, on windows use something like this, this will be s
 
     xcopy /Y /Q PYPrime.exe workload-PYPrime.exe
     
-On linux you can use either gcc or Clang, I chose Clang since the performance is closer to windows*
+On linux you can use either gcc or Clang, I chose Clang since the performance is closer to what you get on windows*
     
     clang -O3 -I /usr/include/python3.7 PYPrime.c -lpython3.7m -o PYPrime
     
