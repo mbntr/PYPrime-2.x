@@ -37,7 +37,7 @@ class Header:
             hpr //= 1000
             ppr = "B"
     
-        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.0 BenchMate{35 * ' '}\n{85 * '-'}\n\n" \
+        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.0{35 * ' '}\n{85 * '-'}\n\n" \
               f'OS    : {self.OS}\n' \
               f'Timer : {round(self.qpf / 1000000, 2)} MHz\n' \
               f'Prime : {hpr}{ppr} - up to {pr:n}\n', flush=True)
