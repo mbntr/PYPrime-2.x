@@ -1,5 +1,6 @@
 # PYPrime-2
-PYPrime 2 is an open source python based benchmark, which scales well with RAM clock, timings and overall bandwidth, less so with CPU speed.
+PYPrime 2 is an open source python based benchmark which scales well with RAM clock, timings and overall bandwidth, less so with CPU speed.
+
 When compiling it yourself you should first install cython
 
     pip install cython 
@@ -21,7 +22,7 @@ On linux you can use either gcc or Clang, I chose Clang since the performance is
     
     
     
-*Keep in mind that you can't really use this version directly on Linux since it imports Query Performance Counter from the Kernel32 dll, which is only available on Windows, you can replace those lines of code with time.perf_counter()
+*Keep in mind that you can't use this version directly on Linux since uses Query Performance Counter from Kernel32.dll, which is only available on Windows, you can replace those lines of code with time.perf_counter()
 
 
 A huge thanks goes to the guys at BenchMate without whom this wouldn't have been possible!
