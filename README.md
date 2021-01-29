@@ -11,7 +11,7 @@ after that you can cythonize the .pyx file
     
 Now you can compile the file, on windows use something like this, this will be slightly different on your PC, 
 
-    cl .\src\PYPrime.c /O2 /Oi /Ot /GL /Gy /fp:fast /I "[Path to python]\include" /link /OPT:REF,ICF /LIBPATH:"[Path to python]\libs"
+    cl PYPrime.c /O2 /Oi /Ot /GL /Gy /fp:fast /I "[Path to python]\include" /link /OPT:REF,ICF /LIBPATH:"[Path to python]\libs"
 
     xcopy /Y /Q PYPrime.exe workload-PYPrime.exe
     
