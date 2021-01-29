@@ -7,7 +7,7 @@ When compiling it yourself you should first install cython
   
 after that you can cythonize the .pyx file
   
-    cython --embed -3 -o .\src\PYPrime.c .\src\PYPrime.pyx 
+    cython --embed -3 -o PYPrime.c PYPrime.pyx 
     
 Now you can compile the file, on windows use something like this, this will be slightly different on your PC, 
 
