@@ -21,6 +21,14 @@ kernel32 = WinDLL('kernel32', use_last_error=True)
 # Globals
 cdef ull pr = 0
 cdef ull vr = -1
+runs = 5
+results = []
+primes = []
+
+# Wouldn't it be nice if windows worked consistently? 
+CRED = '\033[91m'
+CGRN = '\33[32m'
+CEND = '\033[0m'
 
 # Header
 
@@ -37,27 +45,19 @@ class Header:
             hpr //= 1000
             ppr = "B"
     
-        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.0{35 * ' '}\n{85 * '-'}\n\n" \
-              f'OS    : {self.OS}\n' \
-              f'Timer : {round(self.qpf / 1000000, 2)} MHz\n' \
+        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.1{35 * ' '}\n{85 * '-'}\n\n" 
+              f'OS    : {self.OS}\n' 
+              f'Timer : {round(self.qpf / 1000000, 2)} MHz\n' 
               f'Prime : {hpr}{ppr} - up to {pr:n}\n', flush=True)
 
 # Score
 
 class Score:   
-    def __init__(self, prime, valid, time):
-        self.prime = prime
-        self.valid = valid
+    def __init__(self, time):
         self.time = time
 
     def output(self):
-        if not self.valid:
-            print(f"\nINVALID: {self.prime}", flush=True)
-        else:
-            line1 = f"Prime number     : {self.prime:n} is VALID"
-            line2 = f"Computation time : {round(self.time, 3):0.3f} s"
-
-            print("\n".join(["", line1, line2]), flush=True)
+            print(f"\nAverage computation time : {round(self.time, 3):0.3f} s")
 
 
 # Benchmark
@@ -80,8 +80,8 @@ cdef print_status(int loop, ull qpf, ull start_time):
     end_time = wintypes.LARGE_INTEGER()
 
     kernel32.QueryPerformanceCounter(byref(end_time))
-
-    print("    Step {:} ....... {:0.3f} s".format(loop, round((end_time.value - start_time) / qpf, 3)), flush=True)
+    
+    print(f"[{'█'* (loop * 2) + ' '* (18 - loop * 2)}] step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
 
 cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull start_time) nogil:
     cdef ull limit1, sqrtlimit1, loopstep, nextstep, x, x2, x2b3, x2b4, y, y2, n, m, o, nd, md
@@ -161,20 +161,24 @@ cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull 
     return x
 
 cdef benchmark(ull limit, ull qpf):
-    cdef ull resultx, result
-    cdef ull sieve_len = (limit // 8) + 1
 
     start_time = wintypes.LARGE_INTEGER()
     end_time = wintypes.LARGE_INTEGER()
 
-    # Memory allocation
-    print_memalloc(sieve_len)
 
+    cdef ull resultx, result
+    cdef ull sieve_len = (limit // 8) + 1
+    # Memory allocation
+    # print_memalloc(sieve_len)
+    
+    
     sieve_data = cvarray(shape=(sieve_len,), itemsize=sizeof(unsigned char), format="B")
     cdef unsigned char[::1] sieve = sieve_data
 
-    print("Starting benchmark:\n", flush=True)
-
+    
+    
+    
+    
     # Start timestamp
     kernel32.QueryPerformanceCounter(byref(start_time))
 
@@ -188,8 +192,6 @@ cdef benchmark(ull limit, ull qpf):
     result = (sieve[resultx].bit_length() - 1) + resultx * 8
     time = round((end_time.value - start_time.value) / qpf, 3)
 
-    # Output end time
-    print("    Sieve Scan ... {:0.3f} s".format(time), flush=True)
 
     return [ result, result == vr, time ]
 
@@ -268,6 +270,8 @@ while True:
         print("Usage: PYPrime.exe [1-1024M, 1-32B]")
         break
 
+    
+    
     # Header
     qpf = wintypes.LARGE_INTEGER()
 
@@ -275,13 +279,25 @@ while True:
 
     Header = Header(qpf.value)
     Header.output()
-
-    # Benchmark
-    run = benchmark(pr, qpf.value)
-    #print(f"RUN: {run}")
-
-    # Score
-    Score = Score(run[0], run[1], run[2])
+    
+    print("Starting benchmark:\n")
+    
+    for i in range(runs):
+        # Benchmark
+        run = benchmark(pr, qpf.value)
+        
+        
+            
+        valid = "VALID" if run[1] else "INVALID"
+        # Output end time
+        print(f"Run {i + 1} {valid} ------ Completed in {run[2]} s")
+        
+        if not run[1]:
+            break
+            
+        results.append(run[2])
+       
+    Score = Score(sum(results) / len(results))
     Score.output()
 
     break
