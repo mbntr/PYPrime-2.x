@@ -21,7 +21,7 @@ kernel32 = WinDLL('kernel32', use_last_error=True)
 # Globals
 cdef ull pr = 0
 cdef ull vr = -1
-runs = 5
+runs = 7
 results = []
 primes = []
 
@@ -81,7 +81,7 @@ cdef print_status(int loop, ull qpf, ull start_time):
 
     kernel32.QueryPerformanceCounter(byref(end_time))
     
-    print(f"[{'█'* (loop * 2) + ' '* (18 - loop * 2)}] step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
+    print(f"|{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
 
 cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull start_time) nogil:
     cdef ull limit1, sqrtlimit1, loopstep, nextstep, x, x2, x2b3, x2b4, y, y2, n, m, o, nd, md
@@ -290,14 +290,16 @@ while True:
             
         valid = "VALID" if run[1] else "INVALID"
         # Output end time
-        print(f"Run {i + 1} {valid} ------ Completed in {run[2]} s")
+        print(f"Run {i + 1} {valid} ------ Completed in {run[2]} s; Prime: {run[0]:n}")
         
         if not run[1]:
             break
-            
+    
         results.append(run[2])
+        
+    else:   
        
-    Score = Score(sum(results) / len(results))
-    Score.output()
+        Score = Score(sum(sorted(results)[1:6]) / 5)
+        Score.output()
 
     break
