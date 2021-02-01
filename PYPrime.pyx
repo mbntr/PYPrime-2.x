@@ -25,11 +25,6 @@ runs = 7
 results = []
 primes = []
 
-# Wouldn't it be nice if windows worked consistently? 
-CRED = '\033[91m'
-CGRN = '\33[32m'
-CEND = '\033[0m'
-
 # Header
 
 class Header:
