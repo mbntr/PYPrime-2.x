@@ -1,5 +1,5 @@
 # PYPrime-2
-PYPrime 2 is an open source python based benchmark which scales well with RAM clock, timings and overall bandwidth, less so with CPU speed.
+PYPrime 2 is an open source python based benchmark that scales well with RAM clock, timings and overall latency, less so with CPU speed.
 
 When compiling it yourself you should first install cython
 
