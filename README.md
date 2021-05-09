@@ -29,6 +29,4 @@ You can find precompiled binaries here:
 
 http://pyprime.servehttp.com/PYPrime/Downloads2.html
 
-
-
 A huge thanks goes to the guys at BenchMate without whom this wouldn't have been possible!
