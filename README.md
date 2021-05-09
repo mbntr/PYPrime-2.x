@@ -25,8 +25,9 @@ You might have to replace "python3.7" with later versions depending on what you 
     
 *Keep in mind that you can't use this version directly on Linux since uses Query Performance Counter from Kernel32.dll, which is only available on Windows, you can replace those lines of code with time.perf_counter()
 
-You can find precompiled binaries here:
+You can find precompiled binaries for most architectures and OSes here:
 
 http://pyprime.servehttp.com/PYPrime/Downloads2.html
+ 
 
 A huge thanks goes to the guys at BenchMate without whom this wouldn't have been possible!
