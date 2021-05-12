@@ -20,7 +20,8 @@ Skylake and derivatives:
 		
 	-The benchmark doesn't scale as well below CL12 with this specific architecture, try tightening other timings.
 		
-	-Once you hit a wall with memory overclock your core and cache
+	-Once you hit a wall with memory overclock your core and cache, while nowhere as beneficial as ram oc and timings, 
+	it can improve your score when you are memory limited
 		
 		
 Rocket Lake S:
