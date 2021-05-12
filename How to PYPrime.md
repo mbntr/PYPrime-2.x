@@ -37,7 +37,7 @@ Rocket Lake S:
 		
 	-Tighten the all the timings as far as possible
 		
-	-Overclock the CPU and cache (higher uncore frequencies may to have more of an effect on RKL-S than on Skylake based architectures)
+	-Overclock the CPU and cache (higher uncore frequencies may have more of an effect on RKL-S than on Skylake based architectures)
 				
   Zen 2 and 3:
   
