@@ -12,7 +12,7 @@ Architectures:
 
 Skylake and derivatives:
   	
-	-Run the benchmark on Core #2 with the priority set to "High" for the best possible results
+	-Run the benchmark on Core #1 with the priority set to "High" for the best possible results
 		
 	-Try to get as high of a memory clock as possible, then tighten the timings
 		
@@ -31,7 +31,7 @@ Rocket Lake S:
 	but you will be stuck at about 4000 MHz on the RAM.
 	To get better performance running at Gear 2 you would have to get the ram to much higher speeds
 		
-	-Run the benchmark on the lowest latency core (I don't have any data yet to tell you which core will perform the best)
+	-Run the benchmark on Core #1 with the priority set to "High" for the best possible results
 		
 	-Get the RAM to the maximum possible clock your CPU can handle while kstaying in Gear 1 (this value will be around 3800 and 4000 MHz)
 		
