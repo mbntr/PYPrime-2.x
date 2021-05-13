@@ -21,9 +21,25 @@ You might have to replace "python3.7" with later versions depending on what you 
     clang -O3 -I /usr/include/python3.7 PYPrime.c -lpython3.7m -o PYPrime
     
     
-    
-    
 *Keep in mind that you can't use this version directly on Linux since uses Query Performance Counter from Kernel32.dll, which is only available on Windows, you can replace those lines of code with time.perf_counter()
+
+
+
+On macOS the procedure isn't as straight forward, first you have to install python 3 and Xcode, then you have to edit the output file (PYPrime.c)
+
+you will find something akin to this
+
+    #include "Python.h"
+
+and you have to change it to the directory of your Python 3 installation, for example
+
+    #include "/Library/Frameworks/Python.framework/Versions/3.7/include/python3.7m/Python.h"
+    
+Then you can compile the program
+
+    clang -O3 -L /Library/Frameworks/Python.framework/Versions/3.7/lib -lpython3.7m -I /Library/Frameworks/Python.framework/Versions/3.7/include/python3.7m  PYPrime.c -o PYPrime
+
+
 
 You can find precompiled binaries for most architectures and OSes here:
 
