@@ -15,7 +15,7 @@ Now you can compile the file, on windows use something like this, this will be s
 
     xcopy /Y /Q PYPrime.exe workload-PYPrime.exe
     
-On linux you can use either gcc or Clang, I chose Clang since the performance is closer to what you get on windows*
+On linux you can use either gcc or Clang, I chose Clang as the performance is closer to what you would get on windows*
 You might have to replace "python3.7" with later versions depending on what you have currently installed
     
     clang -O3 -I /usr/include/python3.7 PYPrime.c -lpython3.7m -o PYPrime
@@ -26,19 +26,19 @@ You might have to replace "python3.7" with later versions depending on what you 
 
 
 On macOS the procedure isn't as straight forward, first you have to install python 3 and Xcode, then you have to edit the output file (PYPrime.c)
+I decided to use Python 3.9 as it will also support arm based macs, but you can use basically whatever version you want
 
 you will find something akin to this
 
     #include "Python.h"
 
-and you have to change it to the directory of your Python 3 installation, for example
+For the compilation to work you'll have to change it to the directory of your Python 3 installation, for example:
 
-    #include "/Library/Frameworks/Python.framework/Versions/3.7/include/python3.7m/Python.h"
+    #include "/Library/Frameworks/Python.framework/Versions/3.9/include/python3.9/Python.h"
     
-Then you can compile the program
+Then you may compile the program:
 
-    clang -O3 -L /Library/Frameworks/Python.framework/Versions/3.7/lib -lpython3.7m -I /Library/Frameworks/Python.framework/Versions/3.7/include/python3.7m  PYPrime.c -o PYPrime
-
+    clang -O3 -L /Library/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -I /Library/Frameworks/Python.framework/Versions/3.9/include/python3.9  PYPrime.c -o PYPrime
 
 
 You can find precompiled binaries for most architectures and OSes here:
