@@ -252,19 +252,14 @@ while True:
             break            
             
         if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
-            print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210514")
-            break
+            print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210516")       
+            exit()
            
-        
     try:
         runs = int(sys.argv[2])
-    except ValueError:
-        pass
-    except IndexError:
+    except ValueError or IndexError:
         pass
     
-    #if pr == 0:
-    #    break
     
     
     # Header
