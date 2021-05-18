@@ -17,6 +17,8 @@ Now you can compile the file, on windows use something like this, this will be s
     
 On linux you can use either gcc or Clang, I chose Clang as the performance is closer to what you would get on windows*
 You might have to replace "python3.7" with later versions depending on what you have currently installed
+
+I would also suggest installing numpy, as it will lead to more accurate results
     
     clang -O3 -I /usr/include/python3.7 PYPrime.c -lpython3.7m -o PYPrime
     
