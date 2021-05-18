@@ -295,7 +295,7 @@ while True:
             std = numpy.std(results)
         
             for t in results:
-                if t >= numpy.mean(results) - std or t <= numpy.mean(results) + std:
+                if t >= numpy.mean(results) - std and t <= numpy.mean(results) + std:
                     corr_results.append(t)
 
             Score = Score(numpy.mean(corr_results))
