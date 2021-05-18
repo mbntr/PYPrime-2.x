@@ -23,6 +23,7 @@ cdef ull pr = 0
 cdef ull vr = -1
 runs = 7
 results = []
+corr_results = []
 primes = []
 
 pr = 2048000000
@@ -196,6 +197,7 @@ cdef benchmark(ull limit, ull qpf):
 while True:
     # Command line parameters
     for i in sys.argv[1:]:
+    
         if i.upper() == "32M":
             pr = 32000000
             vr = 31999939
@@ -252,7 +254,7 @@ while True:
             break            
             
         if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
-            print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210516")       
+            print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210518")       
             exit()
            
     try:
@@ -274,9 +276,7 @@ while True:
     
     for i in range(runs):
         # Benchmark
-        run = benchmark(pr, qpf.value)
-        
-        
+        run = benchmark(pr, qpf.value)            
             
         valid = "VALID" if run[1] else "INVALID"
         # Output end time
@@ -289,7 +289,28 @@ while True:
         
     else:   
        
-        Score = Score(sum(results) / len(results))
-        Score.output()
+        try:
+            import numpy
+        
+            std = numpy.std(results)
+        
+            for t in results:
+                if t >= numpy.mean(results) - std or t <= numpy.mean(results) + std:
+                    corr_results.append(t)
 
+            Score = Score(numpy.mean(corr_results))
+            Score.output()
+            
+        except ModuleNotFoundError:
+            
+            print("\nPlease install numpy for more precise results\n") 
+            
+            if len(results) >= 5:
+                Score = Score(sum(sorted(results)[1:-1]) / (len(results) - 2))
+                Score.output()
+            
+            else:
+                Score = Score(sum(results) / len(results))
+                Score.output()
     break
+    
