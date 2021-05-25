@@ -1,4 +1,4 @@
-# How to PYPrime, rev. 1.1
+# How to PYPrime, rev. 1.2
 
 PYPrime 2 is a memory benchmark that scales with latency, the exact scaling end behaviour will vary depending on the architecture used.
 In general you should get as high of a clock as possible (with a catch) then tune timings and sub timings.
@@ -41,7 +41,7 @@ Rocket Lake S:
 				
   Zen 2 and 3:
   
-  	-Unlinke some other architectures, Zen 2 and especially 3 scale really well with timings, down to CL11 for example, the clocks speeds are limited to about
+  	-Unlinke some other architectures, Zen 2 and especially 3 scale really well with timings, down to CL11 for example, clocks speeds are limited to about
 	4000 MHz, you would have to incrase them significantly to negate the effects of the higer latency caused by the decoupling of the controller and memory.
 	The procedure here is similar to Rocket Lake, get the memory to the maximum possble clock it can sustain at a 1:1 ratio, then tweak the timings
   	*Work In Progress
