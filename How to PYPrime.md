@@ -1,10 +1,10 @@
 # How to PYPrime, rev. 1.2
 
-PYPrime 2 is a memory benchmark that scales with latency, the exact scaling end behaviour will vary depending on the architecture used.
+PYPrime 2 is a memory benchmark that scales with memory latency, the exact scaling and behaviour will vary depending on the architecture used.
 In general you should get as high of a clock as possible (with a catch) then tune timings and sub timings.
-PYPrime also scales with CPU and Cache clock, this should not be your first priority though.
+PYPrime also scales with CPU and Cache speed, but this should still not be your first priority though.
 
-Due to the nature of many CPU architectures, some cores will be physically closer to the IMC, thus, when setting the affinity to a single core, 
+Due to the nature of most CPU architectures, some cores will be physically closer to the IMC, thus, some cores will perform better than others. 
 I would suggest choosing the closest one to the memory controller, doing so will result in slightly higher performance (up to 150-200ms); 
 don't forget to set the priority to "High" or "Realtime".
 
