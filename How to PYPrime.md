@@ -1,4 +1,4 @@
-# How to PYPrime, rev. 1.1
+# How to PYPrime, rev. 1.2
 
 PYPrime 2 is a memory benchmark that scales with latency, the exact scaling end behaviour will vary depending on the architecture used.
 In general you should get as high of a clock as possible (with a catch) then tune timings and sub timings.
@@ -20,12 +20,15 @@ DDR4
 	Zen and Zen +
 	
 DDR3
-        *work in progress*
+
+	*work in progress*
 
 DDR2
+
 	*work in progress*
 	
 DDR
+
 	*work in progress*
 	
 	
