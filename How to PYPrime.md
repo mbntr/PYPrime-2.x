@@ -8,19 +8,45 @@ Due to the nature of many CPU architectures, some cores will be physically close
 I would suggest choosing the closest one to the memory controller, doing so will result in slightly higher performance (up to 150-200ms); 
 don't forget to set the priority to "High" or "Realtime".
 
+Some µArchitectures will also perform better than others with the same ram configuration, here they are ordered from best to worst
+
+DDR4
+
+	Rocket Lake S Gear 1
+	Rocket Lake S Gear 2
+	Skylake and derivatives
+	Zen 3
+	Zen 2
+	Zen and Zen +
+	
+DDR3
+        *work in progress*
+
+DDR2
+	*work in progress*
+	
+DDR
+	*work in progress*
+	
+	
+If you are benching competitively and your system happens to be extremely unstable, add the line XOC=1 to cpuz.ini, to reduce the stress on the system
+and prevent it from crashing when opening CPU-Z
+
 Architectures:
 
 Skylake and derivatives:
   	
-	-Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	- Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	
+	- If you are benching competitively disable Hyperthreading, doing so should boost scores while reducing power consumption
 		
-	-Try to get as high of a memory clock as possible, then tighten the timings
+	- Try to get as high of a memory clock as possible, then tighten the timings
 		
-	-When tightening the timings, don't stop at the primaries, tweaking the secondaries and tertiaries will result in significantly higher performance
+	- When tightening the timings, don't stop at the primaries, tweaking the secondaries and tertiaries will result in significantly higher performance
 		
-	-The benchmark doesn't scale as well below CL12 with this specific architecture, try tightening other timings.
+	- The benchmark doesn't scale as well below CL12 with this specific architecture, try tightening other timings.
 		
-	-Once you hit a wall with memory overclock your core and cache, while nowhere as beneficial as ram oc and timings, 
+	- Once you hit a wall with memory overclock your core and cache, while nowhere as beneficial as ram oc and timings, 
 	it can improve your score when you are memory limited
 		
 		
@@ -29,19 +55,20 @@ Rocket Lake S:
 	Rocket Lake S was the first intel architecture to introduce "Gears", basically at Gear 1 the controller and the memory run at 1:1, while at Gear 2
 	they run at a 1:2 ratio, the former will result in overall better performance in this specific banchmark due to the lower memory latency,
 	but you will be stuck at about 4000 MHz on the RAM.
-	To get better performance running at Gear 2 you would have to get the ram to much higher speeds
+	To get better performance running at Gear 2 you would have to get the ram to far higher speeds
 		
-	-Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	- Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	
+	- If you are benching competitively disable Hyperthreading, doing so should boost scores while reducing power consumption
 		
-	-Get the RAM to the maximum possible clock your CPU can handle while kstaying in Gear 1 (this value will be around 3800 and 4000 MHz)
+	- Get the RAM to the maximum possible clock your CPU can handle while staying in Gear 1 (this value will be around 3800 and 4000 MHz)
 		
-	-Tighten the all the timings as far as possible
+	- Tighten the all the timings, including secondaries and tertiaries, as far as possible
 		
-	-Overclock the CPU and cache (higher uncore frequencies may have more of an effect on RKL-S than on Skylake based architectures)
+	- Overclock the CPU and cache (higher uncore frequencies may have more of an effect on RKL-S than on Skylake based architectures)
 				
   Zen 2 and 3:
   
-  	*Work In Progress
-  
+  	- Run the benchmark with the affinity set to the one of the "starred cores" (you can find which ones exactly using Ryzen Master) with priority set to "High"
 
 If you have any findings of yours don't hesitate to contact me!
