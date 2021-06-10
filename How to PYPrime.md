@@ -8,7 +8,10 @@ Due to the nature of many CPU architectures, some cores will be physically close
 I would suggest choosing the closest one to the memory controller, doing so will result in slightly higher performance (up to 150-200ms); 
 don't forget to set the priority to "High" or "Realtime".
 
-Some µArchitectures will also perform better than others with the same ram configuration, here they are ordered from best to worst
+Performance will be higher when running dual rank memory at 1T, in most cases the differences will be negligible, but this is something to keep in mind
+when overclocking competitively
+
+Some µArchitectures will also perform better than others with the same ram configuration, here they are ordered from fastest to slowest
 
 DDR4
 
@@ -39,7 +42,7 @@ Architectures:
 
 Skylake and derivatives:
   	
-	- Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	- Run the benchmark on Core #1 (which is the second one, core #0 is the first) with the priority set to "High" for the best possible results
 	
 	- If you are benching competitively disable Hyperthreading, doing so should boost scores while reducing power consumption
 		
@@ -49,18 +52,19 @@ Skylake and derivatives:
 		
 	- The benchmark doesn't scale as well below CL12 with this specific architecture, try tightening other timings.
 		
-	- Once you hit a wall with memory overclock your core and cache, while nowhere as beneficial as ram oc and timings, 
-	it can improve your score when you are memory limited
+	- Once you hit a wall with memory, overclock your core and cache, while nowhere as beneficial as ram oc and timings
+	it can improve your score when memory limited
 		
 		
 Rocket Lake S:
  		
-	Rocket Lake S was the first intel architecture to introduce "Gears", basically at Gear 1 the controller and the memory run at 1:1, while at Gear 2
+	Rocket Lake S was the first intel architecture to introduce "Gears", at Gear 1 the controller and the memory run at 1:1, while at Gear 2
 	they run at a 1:2 ratio, the former will result in overall better performance in this specific banchmark due to the lower memory latency,
-	but you will be stuck at about 4000 MHz on the RAM.
+	you will be stuck at about 4000 MHz on the RAM though.
+	
 	To get better performance running at Gear 2 you would have to get the ram to far higher speeds
 		
-	- Run the benchmark on Core #1 with the priority set to "High" for the best possible results
+	- Run the benchmark on Core #1 (which is the second one, core #0 is the first) with the priority set to "High" for the best possible results
 	
 	- If you are benching competitively disable Hyperthreading, doing so should boost scores while reducing power consumption
 		
