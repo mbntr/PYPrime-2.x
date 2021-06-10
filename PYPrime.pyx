@@ -1,8 +1,9 @@
-# cython: language_level=3, binding=True, wraparound=False, boundscheck=False, initializedcheck=False, unraisable_tracebacks=False, annotation_typing=False, cdivision=True
+# cython: language_level=3, binding=True, boundscheck=False, initializedcheck=False, unraisable_tracebacks=False, annotation_typing=False, cdivision=True
 
 import sys
 import math
 import locale
+import subprocess
 
 from cython.view cimport array as cvarray
 from libc.stdio cimport printf
@@ -44,10 +45,11 @@ class Header:
             hpr //= 1000
             ppr = "B"
     
-        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2{35 * ' '}\n{85 * '-'}\n\n" 
-              f'OS    : {self.OS}\n' 
-              f'Timer : {round(self.qpf / 1000000, 2)} MHz\n'
-              f'Prime : {hpr}{ppr} - up to {pr:n}\n', flush=True)
+        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
+              f' OS             : {self.OS}\n' 
+              f' Python Version : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
+              f' Timer          : {round(self.qpf / 1000000, 2)} MHz\n'
+              f' Prime          : {hpr}{ppr} - up to {pr:n}\n', flush=True)
 
 # Score
 
@@ -80,7 +82,7 @@ cdef print_status(int loop, ull qpf, ull start_time):
 
     kernel32.QueryPerformanceCounter(byref(end_time))
     
-    print(f"|{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
+    print(f" |{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
 
 cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull start_time) nogil:
     cdef ull limit1, sqrtlimit1, loopstep, nextstep, x, x2, x2b3, x2b4, y, y2, n, m, o, nd, md
@@ -195,73 +197,85 @@ cdef benchmark(ull limit, ull qpf):
 # Main
 
 while True:
-    # Command line parameters
-    for i in sys.argv[1:]:
     
-        if i.upper() == "32M":
-            pr = 32000000
-            vr = 31999939
-            break
-            
-        if i.upper() == "64M":
-            pr = 64000000
-            vr = 63999979
-            break
-            
-        if i.upper() == "128M":
-            pr = 128000000
-            vr = 127999981
-            break
-            
-        if i.upper() == "256M":
-            pr = 256000000
-            vr = 255999983
-            break
-            
-        if i.upper() == "512M":
-            pr = 512000000
-            vr = 511999979
-            break
-            
-        if i.upper() == "1024M" or i.upper() == "1B":
-            pr = 1024000000
-            vr = 1023999989
-            break
-            
-        if i.upper() == "2048M" or i.upper() == "2B":
-            pr = 2048000000
-            vr = 2047999957
-            break
-            
-        if i.upper() == "4096M" or i.upper() == "4B":
-            pr = 4096000000
-            vr = 4095999983
-            break
-            
-        if i.upper() == "8192M" or i.upper() == "8B":
-            pr = 8192000000
-            vr = 8191999993
-            break
-            
-        if i.upper() == "16B":
-            pr = 16384000000
-            vr = 16383999977
-            break
-            
-        if i.upper() == "32B":
-            pr = 32768000000
-            vr = 32767999997
-            break            
-            
-        if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
-            print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210518")       
-            exit()
-           
-    try:
-        runs = int(sys.argv[2])
-    except ValueError or IndexError:
-        pass
+    if len(sys.argv) != 1:
+        # Command line parameters
+        for i in sys.argv[1:]:
     
+            if i.upper() == "32M":
+                pr = 32000000
+                vr = 31999939
+                break
+    
+            if i.upper() == "64M":
+                pr = 64000000
+                vr = 63999979
+                break
+    
+            if i.upper() == "128M":
+                pr = 128000000
+                vr = 127999981
+                break
+    
+            if i.upper() == "256M":
+                pr = 256000000
+                vr = 255999983
+                break
+    
+            if i.upper() == "512M":
+                pr = 512000000
+                vr = 511999979
+                break
+    
+            if i.upper() == "1024M" or i.upper() == "1B":
+                pr = 1024000000
+                vr = 1023999989
+                break
+    
+            if i.upper() == "2048M" or i.upper() == "2B":
+                pr = 2048000000
+                vr = 2047999957
+                break
+    
+            if i.upper() == "4096M" or i.upper() == "4B":
+                pr = 4096000000
+                vr = 4095999983
+                break
+    
+            if i.upper() == "8192M" or i.upper() == "8B":
+                pr = 8192000000
+                vr = 8191999993
+                break
+    
+            if i.upper() == "16B":
+                pr = 16384000000
+                vr = 16383999977
+                break
+    
+            if i.upper() == "32B":
+                pr = 32768000000
+                vr = 32767999997
+                break
+    
+            if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
+                print(
+                    "Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                sys.exit()
+            
+            else:
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                sys.exit()
+
+        if len(sys.argv) == 2:
+            runs = 7
+    
+        if len(sys.argv) == 3:
+            try:
+                runs = int(sys.argv[2])
+    
+            except ValueError or IndexError:
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                sys.exit()
     
     
     # Header
@@ -272,8 +286,8 @@ while True:
     Header = Header(qpf.value)
     Header.output()
     
-    print("Starting benchmark:\n")
-    
+    input("Press ENTER to start the benchmark:\n")
+        
     for i in range(runs):
         # Benchmark
         run = benchmark(pr, qpf.value)            
@@ -303,14 +317,12 @@ while True:
             
         except ModuleNotFoundError:
             
-            print("\nPlease install numpy for more precise results\n") 
-            
-            if len(results) >= 5:
-                Score = Score(sum(sorted(results)[1:-1]) / (len(results) - 2))
-                Score.output()
-            
-            else:
-                Score = Score(sum(results) / len(results))
-                Score.output()
-    break
+            print("\nPlease install numpy for more precise results")         
+
+            Score = Score(sum(results) / len(results))
+            Score.output()
+				
+    input("\nPress ENTER to exit")
     
+    break
+   
