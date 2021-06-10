@@ -18,8 +18,7 @@ You might have to replace "python3.7" with later versions depending on what you 
     
     clang -O3 -I /usr/include/python3.7 PYPrime.c -lpython3.7m -o PYPrime
     
-I would also suggest installing numpy, as it will lead to more accurate results
-
+    
 *Keep in mind that you can't use this version directly on Linux since uses Query Performance Counter from Kernel32.dll, which is only available on Windows, you can replace those lines of code with time.perf_counter()
 
 
