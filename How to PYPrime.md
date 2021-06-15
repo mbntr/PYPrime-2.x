@@ -78,4 +78,5 @@ Rocket Lake S:
   
   	- Run the benchmark with the affinity set to the one of the "starred cores" (you can find which ones exactly using Ryzen Master) with priority set to "High"
 
+
 If you have any findings of yours don't hesitate to contact me!
