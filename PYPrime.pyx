@@ -1,6 +1,7 @@
 # cython: language_level=3, binding=True, boundscheck=False, initializedcheck=False, unraisable_tracebacks=False, annotation_typing=False, cdivision=True
 
 import sys
+import os
 import math
 import locale
 import subprocess
@@ -29,6 +30,14 @@ primes = []
 
 pr = 2048000000
 vr = 2047999957
+
+os.system("color")
+
+COLOR = {
+    "GREEN": "\033[92m",
+    "RED": "\033[91m",
+    "ENDC": "\033[0m"
+}
 
 # Header
 
@@ -297,9 +306,9 @@ while True:
         # Benchmark
         run = benchmark(pr, qpf.value)            
             
-        valid = "\033[32mVALID\033[0m" if run[1] else "\033[31mINVALID\033[0m"
+        valid = ("GREEN", "VALID") if run[1] else ("RED", "INVALID")
         # Output end time
-        print(f"Run {i + 1} {valid} ------ Completed in {run[2]} s; Prime: {run[0]:n}")
+        print(f'Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {run[2]} s; Prime: {run[0]:n}')
         
         if not run[1]:
             break
