@@ -34,7 +34,10 @@ vr = 2047999957
 
 class Header:
     def __init__(self, qpf):
-        self.OS = f'{system()} {release()}, Build {version()}'
+        command = "wmic os get name"
+        OSver = subprocess.run(command, shell=True, stdout=subprocess.PIPE, universal_newlines=True).stdout.split('|')[0].split('\n')[-1]
+
+        self.OS = f"{OSver}, Build {version()}"
         self.qpf = qpf
 
     def output(self):
@@ -46,10 +49,11 @@ class Header:
             ppr = "B"
     
         print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
-              f' OS             : {self.OS}\n' 
-              f' Python Version : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
-              f' Timer          : {round(self.qpf / 1000000, 2)} MHz\n'
-              f' Prime          : {hpr}{ppr} - up to {pr:n}\n', flush=True)
+              f' OS                 : {self.OS}\n' 
+              f' Benchmark Version  : PYPrime 2.2, Build 211014\n' 
+              f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
+              f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n'
+              f' Prime              : {hpr}{ppr} - up to {pr:n}\n', flush=True)
 
 # Score
 
@@ -198,6 +202,7 @@ cdef benchmark(ull limit, ull qpf):
 
 while True:
     
+    # to be replaced with case matching
     if len(sys.argv) != 1:
         # Command line parameters
         for i in sys.argv[1:]:
@@ -259,11 +264,11 @@ while True:
     
             if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
                 print(
-                    "Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                    "Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
                 sys.exit()
             
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -274,7 +279,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 210608")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
                 sys.exit()
     
     
@@ -292,7 +297,7 @@ while True:
         # Benchmark
         run = benchmark(pr, qpf.value)            
             
-        valid = "VALID" if run[1] else "INVALID"
+        valid = "\033[32mVALID\033[0m" if run[1] else "\033[31mINVALID\033[0m"
         # Output end time
         print(f"Run {i + 1} {valid} ------ Completed in {run[2]} s; Prime: {run[0]:n}")
         
