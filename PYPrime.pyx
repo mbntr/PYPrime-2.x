@@ -59,7 +59,8 @@ class Header:
     
         print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
               f' OS                 : {self.OS}\n' 
-              f' Benchmark Version  : PYPrime 2.2, Build 211014\n' 
+              f' CPU                : {str(subprocess.check_output("wmic cpu get name /format:list").strip().decode()[5:])}\n'
+              f' Benchmark Version  : PYPrime 2.2, Build 211015\n' 
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n'
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n', flush=True)
@@ -71,7 +72,7 @@ class Score:
         self.time = time
 
     def output(self):
-            print(f"\nAverage computation time : {round(self.time, 3):0.3f} s")
+            print(f"\n Average computation time : {round(self.time, 3):0.3f} s\n")
 
 
 # Benchmark
@@ -95,7 +96,7 @@ cdef print_status(int loop, ull qpf, ull start_time):
 
     kernel32.QueryPerformanceCounter(byref(end_time))
     
-    print(f" |{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s", end="\r")
+    print(f" |{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s   ", end="\r")
 
 cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull start_time) nogil:
     cdef ull limit1, sqrtlimit1, loopstep, nextstep, x, x2, x2b3, x2b4, y, y2, n, m, o, nd, md
@@ -270,14 +271,9 @@ while True:
                 pr = 32768000000
                 vr = 32767999997
                 break
-    
-            if i.upper() == "-H" or i.upper() == "--HELP" or i.upper() == "HELP":
-                print(
-                    "Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
-                sys.exit()
             
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211015")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -288,7 +284,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211014")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211015")
                 sys.exit()
     
     
@@ -300,7 +296,8 @@ while True:
     Header = Header(qpf.value)
     Header.output()
     
-    input("Press ENTER to start the benchmark:\n")
+    input("Press ENTER to start the benchmark:")
+    print(" ") 
         
     for i in range(runs):
         # Benchmark
@@ -308,7 +305,7 @@ while True:
             
         valid = ("GREEN", "VALID") if run[1] else ("RED", "INVALID")
         # Output end time
-        print(f'Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {run[2]} s; Prime: {run[0]:n}')
+        print(f' Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {run[2]} s; Prime: {run[0]:n}')
         
         if not run[1]:
             break
@@ -336,7 +333,7 @@ while True:
             Score = Score(sum(results) / len(results))
             Score.output()
 				
-    input("\nPress ENTER to exit")
+    input("Press ENTER to exit")
     
     break
    
