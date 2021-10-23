@@ -28,6 +28,7 @@ results = []
 corr_results = []
 primes = []
 
+
 pr = 2048000000
 vr = 2047999957
 
@@ -43,10 +44,11 @@ COLOR = {
 
 class Header:
     def __init__(self, qpf):
-        command = "wmic os get name"
-        OSver = subprocess.run(command, shell=True, stdout=subprocess.PIPE, universal_newlines=True).stdout.split('|')[0].split('\n')[-1]
+        command = "powershell.exe (Get-WMIObject win32_processor).name; (Get-WMIObject win32_operatingsystem).name"
+        OSver = subprocess.run(command, shell=True, stdout=subprocess.PIPE, universal_newlines=True).stdout.split('\n')
 
-        self.OS = f"{OSver}, Build {version()}"
+        self.OS = OSver[1].split('|')[0].split('\n')[-1]
+        self.CPU = f"{OSver[0]}"
         self.qpf = qpf
 
     def output(self):
@@ -58,9 +60,9 @@ class Header:
             ppr = "B"
     
         print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
-              f' OS                 : {self.OS}\n' 
-              f' CPU                : {str(subprocess.check_output("wmic cpu get name /format:list").strip().decode()[5:])}\n'
-              f' Benchmark Version  : PYPrime 2.2, Build 211015\n' 
+              f' OS                 : {self.OS}, Build {version()}\n' 
+              f' CPU                : {self.CPU}\n'
+              f' Benchmark Version  : PYPrime 2.2, Build 211023\n' 
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n'
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n', flush=True)
@@ -259,7 +261,7 @@ while True:
     
             if i.upper() == "8192M" or i.upper() == "8B":
                 pr = 8192000000
-                vr = 8191999993
+                vr = 8191999993 
                 break
     
             if i.upper() == "16B":
@@ -273,7 +275,7 @@ while True:
                 break
             
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211015")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211023")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -284,7 +286,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211015")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211023")
                 sys.exit()
     
     
@@ -336,4 +338,3 @@ while True:
     input("Press ENTER to exit")
     
     break
-   
