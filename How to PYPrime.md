@@ -13,6 +13,10 @@ when overclocking competitively
 
 Some µArchitectures will also perform better than others with the same ram configuration, here they are ordered from fastest to slowest
 
+DDR5
+
+	Alder Lake S
+
 DDR4
 
 	Rocket Lake S Gear 1
