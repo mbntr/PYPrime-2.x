@@ -1,4 +1,4 @@
-# How to PYPrime, rev. 1.3
+# How to PYPrime, rev. 1.4
 
 PYPrime 2 is a memory benchmark that scales with latency, the exact scaling end behaviour will vary depending on the architecture used.
 In general you should get as high of a clock as possible (with a catch) then tune timings and sub timings.
@@ -73,6 +73,17 @@ Rocket Lake S:
 	- Tighten the all the timings, including secondaries and tertiaries, as far as possible
 		
 	- Overclock the CPU and cache (higher uncore frequencies may have more of an effect on RKL-S than on Skylake based architectures)
+	
+  Alder Lake S:
+  
+  	Alder Lake is the first x86 architecure (if you don't count Lakefield) to use a hybrid core design, it features at the top end 8 P cores and 8 E cores.
+	It's also the first consumer architecture to support DDR5 memory, this does mean though that it behaves quite differently from Rocket Lake and it's predecessors.
+	
+	For best performance:
+
+	- Run the benchmark with affinity set to any of the P cores
+	
+	- If benching competitively disable the E cores in BIOS
 				
   Zen 2 and 3:
   
