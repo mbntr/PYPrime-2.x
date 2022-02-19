@@ -19,17 +19,21 @@ DDR5
 
 DDR4
 
+	Alder Lake S *
 	Rocket Lake S Gear 1
 	Rocket Lake S Gear 2
 	Skylake and derivatives
-	Zen 3
-	Zen 2
-	Zen and Zen +
+	Vermeer & Cezanne
+	Matisse
+	Zen & Zen +
 	
 DDR3
 
-	*work in progress*
-
+	Broadwell DT
+	Haswell
+	Ivy Bridge
+	Sandy Bridge
+	
 DDR2
 
 	*work in progress*
