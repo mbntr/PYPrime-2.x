@@ -40,13 +40,36 @@ COLOR = {
     "ENDC": "\033[0m"
 }
 
+memorytypes = {
+    1: 'Other',
+    2: 'Unknown',
+    20: 'DDR',
+    21: 'DDR2',
+    22: 'DDR2 FB-DIMM',
+    24: 'DDR3',
+    26: 'DDR4',
+    34: 'DDR5',
+    27: 'LPDDR',
+    28: 'LPDDR2',
+    29: 'LPDDR3',
+    30: 'LPDDR4',
+    35: 'LPDDR5'
+}
+
 # Header
 
 class Header:
     def __init__(self, qpf):
-        command = "powershell.exe (Get-WMIObject win32_processor).name; (Get-WMIObject win32_operatingsystem).name"
+        command = "powershell.exe (Get-WMIObject win32_processor).name; " \
+          "(Get-WMIObject win32_operatingsystem).name; " \
+          "(Get-WmiObject Win32_PhysicalMemory Capacity, Speed, TotalWidth, SMBIOSMemoryType)"
+        
         OSver = subprocess.run(command, shell=True, stdout=subprocess.PIPE, universal_newlines=True).stdout.split('\n')
 
+        self.memspeed = list(filter(lambda a: 'Speed' in a, OSver))[0].split(': ')[1] 
+        self.memcap = sum(int(item.split(':')[1]) for item in list(filter(lambda a: 'Capacity' in a, OSver))) // 1024 // 1024 // 1024
+        self.buswidth = sum(int(item.split(':')[1]) for item in list(filter(lambda a: 'TotalWidth' in a, OSver)))
+        self.memtype = memorytypes[int(list(filter(lambda a: 'SMBIOSMemoryType' in a, OSver))[0].split(': ')[1])]
         self.OS = OSver[1].split('|')[0].split('\n')[-1]
         self.CPU = f"{OSver[0]}"
         self.qpf = qpf
@@ -58,14 +81,31 @@ class Header:
         if hpr > 1024:
             hpr //= 1000
             ppr = "B"
+            
+        if pr // 8 // 1000000000 > int(self.memcap):
+            if pr // 8 // 1000000 < 1000:
+                memall = f'{COLOR["RED"]}{pr // 8 // 1000000} MB  !!! WARNING !!! Insufficient memory resources{COLOR["ENDC"]}'
+                
+            elif pr // 8 // 1000000 > 1000:
+                memall = f'{COLOR["RED"]}{pr // 8 // 1000000000} GB  !!! WARNING !!! Insufficient memory resources {COLOR["ENDC"]}'
+        else:
+            if pr // 8 // 1000000 < 1000:
+                memall = f'{pr // 8 // 1000000} MB'
+                
+            elif pr // 8 // 1000000 > 1000:
+                memall = f'{pr // 8 // 1000000000} GB'
     
         print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
               f' OS                 : {self.OS}, Build {version()}\n' 
               f' CPU                : {self.CPU}\n'
-              f' Benchmark Version  : PYPrime 2.2, Build 211023\n' 
+              f' RAM                : {self.memcap} GB {self.memtype} @ {self.memspeed} MT/s - {self.buswidth} bit\n\n'
+              
+              f' Benchmark Version  : PYPrime 2.2, Build 220321\n' 
+              f' Prime              : {hpr}{ppr} - up to {pr:n}\n'
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
-              f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n'
-              f' Prime              : {hpr}{ppr} - up to {pr:n}\n', flush=True)
+              f' Memory Allocation  : {memall}\n'
+              f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n', flush=True) 
+              
 
 # Score
 
@@ -78,20 +118,6 @@ class Score:
 
 
 # Benchmark
-
-def print_memalloc(bytes):
-    size = bytes / 1000000000
-    name = "GB"
-
-    if size < 1.0:
-        size = bytes / 1000000
-        name = "MB"
-        
-        if size < 1.0:
-            size = bytes / 1000
-            name = "KB"
-    
-    print("Sieve allocation: {:0.1f} {}".format(round(size, 1), name), flush=True)
 
 cdef print_status(int loop, ull qpf, ull start_time):
     end_time = wintypes.LARGE_INTEGER()
@@ -182,12 +208,9 @@ cdef benchmark(ull limit, ull qpf):
     start_time = wintypes.LARGE_INTEGER()
     end_time = wintypes.LARGE_INTEGER()
 
-
     cdef ull resultx, result
     cdef ull sieve_len = (limit // 8) + 1
-    # Memory allocation
-    # print_memalloc(sieve_len)
-    
+
     
     sieve_data = cvarray(shape=(sieve_len,), itemsize=sizeof(unsigned char), format="B")
     cdef unsigned char[::1] sieve = sieve_data
@@ -274,8 +297,13 @@ while True:
                 vr = 32767999997
                 break
             
+            if i.upper() == "64B":
+                pr = 65536000000
+                vr = 65535999941
+                break
+                
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211023")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220321")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -286,7 +314,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-32B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 211023")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220321")
                 sys.exit()
     
     
@@ -307,7 +335,7 @@ while True:
             
         valid = ("GREEN", "VALID") if run[1] else ("RED", "INVALID")
         # Output end time
-        print(f' Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {run[2]} s; Prime: {run[0]:n}')
+        print(f' Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {format(run[2], ".3f")} s; Prime: {run[0]:n}')
         
         if not run[1]:
             break
