@@ -74,6 +74,7 @@ class Header:
         self.CPU = f"{OSver[0]}"
         self.qpf = qpf
         
+	
     def output(self):
         hpr = pr // 1000000
         ppr = "M"
