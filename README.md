@@ -41,7 +41,7 @@ Then you may compile the program:
 
 You can find precompiled binaries for most architectures and OSes here:
 
-http://pyprime.servehttp.com/PYPrime/Downloads2.html
+https://github.com/monabuntur/PYPrime-2.x/releases
  
 
 A huge thanks goes to the guys at BenchMate without whom this wouldn't have been possible!
