@@ -41,7 +41,7 @@ Then you may compile the program:
 
 You can find precompiled binaries for most architectures and OSes here:
 
-http://pyprime.servehttp.com/PYPrime/Downloads2.html
+https://github.com/monabuntur/PYPrime-2.x/releases
 
 PYPrime 2.2 is also available from Winget 
 
