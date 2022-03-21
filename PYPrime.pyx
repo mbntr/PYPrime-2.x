@@ -74,6 +74,7 @@ class Header:
         self.CPU = f"{OSver[0]}"
         self.qpf = qpf
 
+	
     def output(self):
         hpr = pr // 1000000
         ppr = "M"
@@ -95,6 +96,7 @@ class Header:
             elif pr // 8 // 1000000 > 1000:
                 memall = f'{pr // 8 // 1000000000} GB'
     
+
         print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
               f' OS                 : {self.OS}, Build {version()}\n' 
               f' CPU                : {self.CPU}\n'
