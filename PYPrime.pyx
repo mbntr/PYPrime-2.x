@@ -69,7 +69,10 @@ class Header:
         self.memspeed = list(filter(lambda a: 'Speed' in a, OSver))[0].split(': ')[1] 
         self.memcap = sum(int(item.split(':')[1]) for item in list(filter(lambda a: 'Capacity' in a, OSver))) // 1024 // 1024 // 1024
         self.buswidth = sum(int(item.split(':')[1]) for item in list(filter(lambda a: 'TotalWidth' in a, OSver)))
-        self.memtype = memorytypes[int(list(filter(lambda a: 'SMBIOSMemoryType' in a, OSver))[0].split(': ')[1])]
+        try:
+            self.memtype = memorytypes[int(list(filter(lambda a: 'SMBIOSMemoryType' in a, OSver))[0].split(': ')[1])]
+        except KeyError:
+            self.memtype = 'Unknown'
         self.OS = OSver[1].split('|')[0].split('\n')[-1]
         self.CPU = f"{OSver[0]}"
         self.qpf = qpf
@@ -80,7 +83,7 @@ class Header:
         ppr = "M"
         
         if hpr > 1024:
-            hpr //= 1000
+            hpr //= 1024
             ppr = "B"
             
         if pr // 8 // 1000000000 > int(self.memcap):
@@ -102,7 +105,7 @@ class Header:
               f' CPU                : {self.CPU}\n'
               f' RAM                : {self.memcap} GB {self.memtype} @ {self.memspeed} MT/s - {self.buswidth} bit\n\n'
               
-              f' Benchmark Version  : PYPrime 2.2, Build 220321\n' 
+              f' Benchmark Version  : PYPrime 2.2, Build 220322\n' 
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n'
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Memory Allocation  : {memall}\n'
@@ -305,7 +308,7 @@ while True:
                 break
                 
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220321")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220322")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -316,7 +319,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220321")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220322")
                 sys.exit()
     
     
