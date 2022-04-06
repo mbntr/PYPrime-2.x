@@ -328,6 +328,13 @@ while True:
                 
         if len(sys.argv) == 4:
             mode = (sys.argv[3]).upper()
+            
+            try:
+                runs = int(sys.argv[2])
+    
+            except ValueError or IndexError:
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
+                sys.exit()
     
     
     # Header
