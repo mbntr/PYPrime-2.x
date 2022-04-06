@@ -27,7 +27,7 @@ runs = 7
 results = []
 corr_results = []
 primes = []
-
+mode = "M" # Modes can be M (for mean) and B (for best)
 
 pr = 2048000000
 vr = 2047999957
@@ -105,7 +105,7 @@ class Header:
               f' CPU                : {self.CPU}\n'
               f' RAM                : {self.memcap} GB {self.memtype} @ {self.memspeed} MT/s - {self.buswidth} bit\n\n'
               
-              f' Benchmark Version  : PYPrime 2.2, Build 220322\n' 
+              f' Benchmark Version  : PYPrime 2.2, Build 220406\n' 
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n'
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Memory Allocation  : {memall}\n'
@@ -115,11 +115,15 @@ class Header:
 # Score
 
 class Score:   
-    def __init__(self, time):
+    def __init__(self, time, mode):
         self.time = time
+        self.mode = mode
 
     def output(self):
-            print(f"\n Average computation time : {round(self.time, 3):0.3f} s\n")
+            if mode == "M":
+                print(f"\n Average computation time : {round(self.time, 3):0.3f} s\n")
+            else: 
+                print(f"\n Best computation time : {round(self.time, 3):0.3f} s\n")
 
 
 # Benchmark
@@ -308,7 +312,7 @@ while True:
                 break
                 
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220322")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -319,8 +323,11 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7]\n\nBenchmark written by Monabuntur, build 220322")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
                 sys.exit()
+                
+        if len(sys.argv) == 4:
+            mode = (sys.argv[3]).upper()
     
     
     # Header
@@ -348,26 +355,36 @@ while True:
         results.append(run[2])
         
     else:   
-       
-        try:
-            import numpy
+        if mode == "M":
+            try:
+                import numpy
         
-            std = numpy.std(results)
+                std = numpy.std(results)
         
-            for t in results:
-                if t >= numpy.mean(results) - std and t <= numpy.mean(results) + std:
-                    corr_results.append(t)
+                for t in results:
+                    if t >= numpy.mean(results) - std and t <= numpy.mean(results) + std:
+                        corr_results.append(t)
 
-            Score = Score(numpy.mean(corr_results))
-            Score.output()
+                Score = Score(numpy.mean(corr_results), mode)
+                Score.output()
             
-        except ModuleNotFoundError:
+            except ModuleNotFoundError:
             
-            print("\nPlease install numpy for more precise results")         
-
-            Score = Score(sum(results) / len(results))
-            Score.output()
+                print("\nPlease install numpy for more precise results")         
+    
+                Score = Score(sum(results) / len(results), mode)
+                Score.output()
 				
+        elif mode == "B":
+            results.sort()
+            Score = Score(results[0], mode)
+            Score.output()
+                
+        else:
+            results.sort()
+            Score = Score(results[0], mode)
+            Score.output()
+            
     input("Press ENTER to exit")
     
     break
