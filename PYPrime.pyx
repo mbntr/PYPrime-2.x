@@ -100,12 +100,12 @@ class Header:
                 memall = f'{pr // 8 // 1000000000} GB'
                 
     
-        print(f"{85 * '-'}\n{35 * ' '}PYPrime 2.2 Windows{35 * ' '}\n{85 * '-'}\n\n" 
+        print(f"{85 * '-'}\n{35 * ' '}PYPrime 3.0 BenchMate{35 * ' '}\n{85 * '-'}\n\n" 
               f' OS                 : {self.OS}, Build {version()}\n' 
               f' CPU                : {self.CPU}\n'
               f' RAM                : {self.memcap} GB {self.memtype} @ {self.memspeed} MT/s - {self.buswidth} bit\n\n'
               
-              f' Benchmark Version  : PYPrime 2.2, Build 220722\n' 
+              f' Benchmark Version  : PYPrime 3.0, Build 220722\n' 
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n'
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Memory Allocation  : {memall}\n'
@@ -362,8 +362,6 @@ while True:
     Header = Header(qpf.value)
     Header.output()
     
-    input("Press ENTER to start the benchmark:")
-    print(" ") 
         
     for i in range(runs):
         # Benchmark
@@ -399,7 +397,5 @@ while True:
             results.sort()
             Score = Score(results[0], mode)
             Score.output()
-            
-    input("Press ENTER to exit")
     
     break
