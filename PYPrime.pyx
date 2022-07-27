@@ -12,7 +12,7 @@ from libc.stdio cimport printf
 from platform import system, release, version
 from ctypes import WinDLL, wintypes, byref
 
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+locale.setlocale(locale.LC_ALL, 'C')
 
 # Types
 ctypedef unsigned long long ull
@@ -105,12 +105,29 @@ class Header:
               f' CPU                : {self.CPU}\n'
               f' RAM                : {self.memcap} GB {self.memtype} @ {self.memspeed} MT/s - {self.buswidth} bit\n\n'
               
-              f' Benchmark Version  : PYPrime 2.2, Build 220406\n' 
+              f' Benchmark Version  : PYPrime 2.2, Build 220722\n' 
               f' Prime              : {hpr}{ppr} - up to {pr:n}\n'
               f' Python Version     : Python {sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}\n'
               f' Memory Allocation  : {memall}\n'
               f' Timer              : {round(self.qpf / 1000000, 2)} MHz\n', flush=True) 
               
+
+# Standard deviation
+
+def calcstd (ls):
+    n = len(ls)
+    mean = sum(ls) / n
+    var = sum((x - mean)**2 for x in ls) / n
+    std_dev = var ** 0.5
+    return std_dev
+    
+# Mean
+
+def calcmean (ls):
+    n = len(ls)
+    mean = sum(ls) / n
+    return mean
+    
 
 # Score
 
@@ -312,7 +329,7 @@ while True:
                 break
                 
             else:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220722")
                 sys.exit()
 
         if len(sys.argv) == 2:
@@ -323,7 +340,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220722")
                 sys.exit()
                 
         if len(sys.argv) == 4:
@@ -333,7 +350,7 @@ while True:
                 runs = int(sys.argv[2])
     
             except ValueError or IndexError:
-                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220406")
+                print("Usage:\nPYPrime.exe [32-1024M or 1-64B] [Number of iterations, the default is 7] [Mode, M for mean, B for best]\n\nBenchmark written by Monabuntur, build 220722")
                 sys.exit()
     
     
@@ -362,25 +379,16 @@ while True:
         results.append(run[2])
         
     else:   
-        if mode == "M":
-            try:
-                import numpy
-        
-                std = numpy.std(results)
-        
-                for t in results:
-                    if t >= numpy.mean(results) - std and t <= numpy.mean(results) + std:
-                        corr_results.append(t)
+        if mode == "M":        
+            std = calcstd(results)
+            mean = calcmean(results)
+            for t in results:
+                if t >= mean - std and t <= mean + std:
+                    corr_results.append(t)
 
-                Score = Score(numpy.mean(corr_results), mode)
-                Score.output()
+            Score = Score(calcmean(corr_results), mode)
+            Score.output()
             
-            except ModuleNotFoundError:
-            
-                print("\nPlease install numpy for more precise results")         
-    
-                Score = Score(sum(results) / len(results), mode)
-                Score.output()
 				
         elif mode == "B":
             results.sort()
