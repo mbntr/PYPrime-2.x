@@ -138,9 +138,9 @@ class Score:
 
     def output(self):
             if mode == "M":
-                print(f"\n Average computation time : {round(self.time, 3):0.3f} s\n")
+                print(f"\n Average computation time : {round(self.time, 3):0.3f} s\n", flush=True)
             else: 
-                print(f"\n Best computation time : {round(self.time, 3):0.3f} s\n")
+                print(f"\n Best computation time : {round(self.time, 3):0.3f} s\n", flush=True)
 
 
 # Benchmark
@@ -150,7 +150,7 @@ cdef print_status(int loop, ull qpf, ull start_time):
 
     kernel32.QueryPerformanceCounter(byref(end_time))
     
-    print(f" |{'█'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s   ", end="\r")
+    print(f" |{'#'* (loop * 2) + ' '* (18 - loop * 2)}| step {loop} --- {round((end_time.value - start_time) / qpf, 3))} s   ", end="\r", flush=True)
 
 cdef ull calc(unsigned char [::1] sieve, ull limit, ull sqrtlimit, ull qpf, ull start_time) nogil:
     cdef ull limit1, sqrtlimit1, loopstep, nextstep, x, x2, x2b3, x2b4, y, y2, n, m, o, nd, md
@@ -369,7 +369,7 @@ while True:
             
         valid = ("GREEN", "VALID") if run[1] else ("RED", "INVALID")
         # Output end time
-        print(f' Run {i + 1} {COLOR[valid[0]]} {valid[1]} {COLOR["ENDC"]} ------ Completed in {format(run[2], ".3f")} s; Prime: {run[0]:n}')
+        print(f' Run {i + 1} {valid[1]} ------ Completed in {format(run[2], ".3f")} s; Prime: {run[0]:n}', flush=True)
         
         if not run[1]:
             break
