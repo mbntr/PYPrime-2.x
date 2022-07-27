@@ -88,10 +88,10 @@ class Header:
             
         if pr // 8 // 1000000000 > int(self.memcap):
             if pr // 8 // 1000000 < 1000:
-                memall = f'{COLOR["RED"]}{pr // 8 // 1000000} MB  !!! WARNING !!! Insufficient memory resources{COLOR["ENDC"]}'
+                memall = f'{pr // 8 // 1000000} MB  !!! WARNING !!! Insufficient memory resources'
                 
             elif pr // 8 // 1000000 > 1000:
-                memall = f'{COLOR["RED"]}{pr // 8 // 1000000000} GB  !!! WARNING !!! Insufficient memory resources {COLOR["ENDC"]}'
+                memall = f'{pr // 8 // 1000000000} GB  !!! WARNING !!! Insufficient memory resources'
         else:
             if pr // 8 // 1000000 < 1000:
                 memall = f'{pr // 8 // 1000000} MB'
@@ -369,7 +369,7 @@ while True:
             
         valid = ("GREEN", "VALID") if run[1] else ("RED", "INVALID")
         # Output end time
-        print(f' Run {i + 1} {valid[1]} ------ Completed in {format(run[2], ".3f")} s; Prime: {run[0]:n}', flush=True)
+        print(f' Run {i + 1}  {valid[1]}  ------ Completed in {format(run[2], ".3f")} s; Prime: {run[0]:n}', flush=True)
         
         if not run[1]:
             break
